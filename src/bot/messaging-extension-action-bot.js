@@ -95,7 +95,7 @@ export class TeamsMessagingExtensionsActionBot extends TeamsActivityHandler {
 
         this.sendMessageToChannel(
           context,
-          `${ctf.name} is loaded.\n\nSite: ${ctf.url}\n\nUsername: ${ctf.username}\n\nPassword: ${ctf.password}`
+          `${ctf.name} is loaded.\n\nSite: [${ctf.url}](${ctf.url})\n\nUsername: ${ctf.username}\n\nPassword: ${ctf.password}`
         );
 
         return null;
@@ -209,6 +209,10 @@ export class TeamsMessagingExtensionsActionBot extends TeamsActivityHandler {
           this.ctf_tracker.status(participant)
         );
         return CardResponseHelpers.toTaskModuleResponse(adaptiveCard);
+      case CONSTANTS.END_CTF:
+        console.log(`${participant.name} has ended the CTF`);
+        this.ctf_tracker.end_ctf();
+        return null;
       default:
         return null;
     }
@@ -263,6 +267,7 @@ class CTFTracker {
   constructor(bot) {
     this.current = null;
     this.bot = bot;
+    this.admins = ["Joshua Christman"];
 
     const loadCTFs = async () => {
       if (db !== null) {
@@ -332,6 +337,11 @@ class CTFTracker {
   }
 
   status(participant) {
+    const isAdmin =
+      _.findIndex(
+        this.admins,
+        admin_name => admin_name === participant.name
+      ) !== -1;
     if (this.current === null) {
       return StartNewOrLoadCTFCard(this.past_ctfs);
     } else {
@@ -373,12 +383,16 @@ class CTFTracker {
         filters: participant.filters
       };
 
-      return ActiveCTFCard(personalized_current, preferences);
+      return ActiveCTFCard(personalized_current, preferences, isAdmin);
     }
   }
 
   start_ctf(data) {
-    const doc = new CTFModel({ ...data, active: true });
+    const doc = new CTFModel({
+      ...data,
+      admin: "Joshua Christman",
+      active: true
+    });
     doc.save();
 
     console.log("Started CTF", doc);
@@ -398,6 +412,12 @@ class CTFTracker {
     this.current.save();
 
     return this.current;
+  }
+
+  end_ctf() {
+    this.current.active = false;
+    this.current.save();
+    this.current = null;
   }
 
   async new_challenge({ name, points, category, description }) {

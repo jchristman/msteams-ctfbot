@@ -9,6 +9,7 @@ export const MODIFY_CHALLENGE_SUBMIT = "ModifyChallengeSubmit";
 export const WORK_CHALLENGE_REQUEST = "WorkChallengeRequest";
 export const SOLVE_CHALLENGE = "SolveChallenge";
 export const UPDATE_PREFERENCES = "UpdatePreferences";
+export const END_CTF = "EndCTF";
 
 export const CATEGORIES = [
   "Cryptography",

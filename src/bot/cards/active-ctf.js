@@ -6,7 +6,7 @@ import {
   END_CTF
 } from "./constants.js";
 
-export default (current, preferences) => {
+export default (current, preferences, isAdmin = false) => {
   const card = {
     actions: [
       {
@@ -105,6 +105,16 @@ export default (current, preferences) => {
         }))
       }
     ]);
+  }
+
+  if (isAdmin) {
+    card.actions.unshift({
+      data: {
+        submitLocation: END_CTF
+      },
+      title: "End CTF",
+      type: "Action.Submit"
+    });
   }
 
   return card;
