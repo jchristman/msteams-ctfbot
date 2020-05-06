@@ -80,18 +80,24 @@ export class TeamsMessagingExtensionsActionBot extends TeamsActivityHandler {
     switch (action.data.submitLocation) {
       case CONSTANTS.START_CTF_TASK:
         console.log(`${participant.name} has started a CTF`, action.data);
-        this.ctf_tracker.start_ctf(action.data);
-        adaptiveCard = AdaptiveCardHelper.createAdaptiveCardEditor(
-          this.ctf_tracker.status(participant)
+        const ctf = this.ctf_tracker.start_ctf(action.data);
+
+        this.sendMessageToChannel(
+          context,
+          `${ctf.name} is loaded.\n\nSite: ${ctf.url}\n\nUsername: ${ctf.username}\n\nPassword: ${ctf.password}`
         );
-        return CardResponseHelpers.toTaskModuleResponse(adaptiveCard);
+
+        return null;
       case CONSTANTS.LOAD_CTF_REQUEST:
         console.log(`${participant.name} has loaded a CTF`, action.data);
-        this.ctf_tracker.load_ctf(action.data);
-        adaptiveCard = AdaptiveCardHelper.createAdaptiveCardEditor(
-          this.ctf_tracker.status(participant)
+        const ctf = this.ctf_tracker.load_ctf(action.data);
+
+        this.sendMessageToChannel(
+          context,
+          `${ctf.name} is loaded.\n\nSite: ${ctf.url}\n\nUsername: ${ctf.username}\n\nPassword: ${ctf.password}`
         );
-        return CardResponseHelpers.toTaskModuleResponse(adaptiveCard);
+
+        return null;
       case CONSTANTS.NEW_CTF_REQUEST:
         console.log(`${participant.name} has requested a new CTF`);
         adaptiveCard = AdaptiveCardHelper.createAdaptiveCardEditor(
@@ -276,6 +282,7 @@ class CTFTracker {
   }
 
   track_participant(participant) {
+    if (this.current === null) return participant;
     let index = _.findIndex(
       this.current.participants,
       _participant => _participant.id === participant.id
@@ -375,6 +382,8 @@ class CTFTracker {
 
     console.log("Started CTF", doc);
     this.current = doc;
+
+    return this.current;
   }
 
   load_ctf({ ctf_index = -1 }) {
@@ -386,6 +395,8 @@ class CTFTracker {
     console.log(`Loading ${this.current.name}`);
     this.current.active = true;
     this.current.save();
+
+    return this.current;
   }
 
   async new_challenge({ name, points, category, description }) {
