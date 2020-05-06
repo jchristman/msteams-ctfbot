@@ -75,12 +75,13 @@ export class TeamsMessagingExtensionsActionBot extends TeamsActivityHandler {
 
     let adaptiveCard = null,
       challenge_name = null,
-      mentions = null;
+      mentions = null,
+      ctf = null;
 
     switch (action.data.submitLocation) {
       case CONSTANTS.START_CTF_TASK:
         console.log(`${participant.name} has started a CTF`, action.data);
-        const ctf = this.ctf_tracker.start_ctf(action.data);
+        ctf = this.ctf_tracker.start_ctf(action.data);
 
         this.sendMessageToChannel(
           context,
@@ -90,7 +91,7 @@ export class TeamsMessagingExtensionsActionBot extends TeamsActivityHandler {
         return null;
       case CONSTANTS.LOAD_CTF_REQUEST:
         console.log(`${participant.name} has loaded a CTF`, action.data);
-        const ctf = this.ctf_tracker.load_ctf(action.data);
+        ctf = this.ctf_tracker.load_ctf(action.data);
 
         this.sendMessageToChannel(
           context,
