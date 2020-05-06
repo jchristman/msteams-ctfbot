@@ -276,6 +276,7 @@ class CTFTracker {
   }
 
   track_participant(participant) {
+    if (this.current === null) return participant;
     let index = _.findIndex(
       this.current.participants,
       _participant => _participant.id === participant.id
