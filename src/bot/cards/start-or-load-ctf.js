@@ -5,7 +5,25 @@ import {
   LOAD_CTF_REQUEST
 } from "./constants.js";
 
-export default past_ctfs => {
+export default (past_ctfs, isAdmin = false) => {
+  if (!isAdmin) {
+    const card = {
+      actions: [],
+      body: [
+        {
+          text: `An admin must load the CTF before you can use this bot. Contact @Joshua Christman for help.`,
+          type: "TextBlock",
+          weight: "bolder",
+          wrap: true
+        }
+      ],
+      type: "AdaptiveCard",
+      version: "1.0"
+    };
+
+    return card;
+  }
+
   const card = {
     actions: [
       {

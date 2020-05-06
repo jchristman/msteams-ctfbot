@@ -289,6 +289,7 @@ class CTFTracker {
 
   track_participant(participant) {
     if (this.current === null) return participant;
+
     let index = _.findIndex(
       this.current.participants,
       _participant => _participant.id === participant.id
@@ -342,8 +343,10 @@ class CTFTracker {
         this.admins,
         admin_name => admin_name === participant.name
       ) !== -1;
+
+    console.log(this.admins, participant.name, isAdmin);
     if (this.current === null) {
-      return StartNewOrLoadCTFCard(this.past_ctfs);
+      return StartNewOrLoadCTFCard(this.past_ctfs, isAdmin);
     } else {
       const personalized_current = _.cloneDeep(this.current);
 
