@@ -1,0 +1,89 @@
+{
+    "$schema": "https://github.com/OfficeDev/microsoft-teams-app-schema/blob/preview/DevPreview/MicrosoftTeams.schema.json",
+    "manifestVersion": "devPreview",
+    "version": "0.0.4",
+    "id": "d7a72d5e-dcd4-4882-a6eb-4f01d9795791",
+    "packageName": "club.shellcollecting.ctfbot",
+    "developer": {
+        "name": "Joshua Christman",
+        "websiteUrl": "https://github.com/jchristman",
+        "privacyUrl": "https://github.com/jchristman",
+        "termsOfUseUrl": "https://github.com/jchristman"
+    },
+    "icons": {
+        "color": "color.png",
+        "outline": "outline.png"
+    },
+    "name": {
+        "short": "CTF Bot",
+        "full": "Shell Collecting Club CTF Bot"
+    },
+    "description": {
+        "short": "Automates and organizes Shell Collecting Club CTF activities",
+        "full": "Automates and organizes Shell Collecting Club CTF activities. This includes Team creation, channel management, file management, and git repo management."
+    },
+    "accentColor": "#7196A1",
+    "configurableTabs": [
+        {
+            "configurationUrl": "https://ctfbot.christman.tech/tab-config",
+            "canUpdateConfiguration": true,
+            "scopes": ["team"]
+        }
+    ],
+    "bots": [
+        {
+            "botId": "29b266eb-cd79-4145-85d0-cf19df90ce62",
+            "scopes": ["personal", "team", "groupchat"],
+            "commandLists": [
+                {
+                    "scopes": ["team"],
+                    "commands": [
+                        {
+                            "title": "Add Challenge",
+                            "description": "Use this command to add a challenge to this CTF"
+                        }
+                    ]
+                },
+                {
+                    "scopes": ["groupchat"],
+                    "commands": [
+                        {
+                            "title": "Add Challenge",
+                            "description": "Use this command to add a challenge to this CTF"
+                        }
+                    ]
+                }
+            ],
+            "supportsFiles": true,
+            "isNotificationOnly": false,
+            "supportsCalling": true,
+            "supportsVideo": true
+        }
+    ],
+    "composeExtensions": [
+        {
+            "botId": "29b266eb-cd79-4145-85d0-cf19df90ce62",
+            "canUpdateConfiguration": true,
+            "commands": [
+                {
+                    "id": "CTFStatus",
+                    "type": "action",
+                    "title": "CTF Status",
+                    "description": "Get the current CTF status",
+                    "initialRun": true,
+                    "fetchTask": true,
+                    "context": ["commandBox", "compose", "message"],
+                    "parameters": [
+                        {
+                            "name": "param",
+                            "title": "param",
+                            "description": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "permissions": ["identity", "messageTeamMembers"],
+    "validDomains": ["ctfbot.christman.tech"]
+}
