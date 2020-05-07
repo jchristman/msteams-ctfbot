@@ -25,6 +25,11 @@ class MyAuthenticationProvider {
 
         const json_result = await raw_result.json();
 
+        setTimeout(() => {
+          console.log("Dropping auth token because it expired");
+          this.token = null;
+        }, json_result.expires_in * 1000);
+
         this.token = json_result.access_token;
         console.log("Retrieved access token");
       } else {
