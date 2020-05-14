@@ -509,7 +509,7 @@ class CTFTracker {
   }
 
   async create_channel(displayName, description) {
-    displayName = displayName.replace(/([^a-z0-9_ ]+)/gi, "");
+    displayName = displayName.replace(/([^a-z0-9 ]+)/gi, "");
 
     const channel = {
       displayName,
