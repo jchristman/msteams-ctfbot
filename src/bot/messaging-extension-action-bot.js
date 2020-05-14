@@ -21,11 +21,15 @@ export class TeamsMessagingExtensionsActionBot extends TeamsActivityHandler {
   constructor(teams_client) {
     super();
 
+    this.init();
+    this.teams_client = teams_client;
+    this.ctf_tracker = new CTFTracker(this);
+  }
+
+  init() {
     this.main_channel = null;
     this.conversationRef = null;
-    this.teams_client = teams_client;
     this.team_details = null;
-    this.ctf_tracker = new CTFTracker(this);
   }
 
   async sendMessageToChannel(context, text, mentions = []) {
@@ -212,6 +216,7 @@ export class TeamsMessagingExtensionsActionBot extends TeamsActivityHandler {
       case CONSTANTS.END_CTF:
         console.log(`${participant.name} has ended the CTF`);
         this.ctf_tracker.end_ctf();
+        this.init();
         return null;
       default:
         return null;
